@@ -28,7 +28,7 @@ public class BoardController {
     public String list(Model model){
         List<BoardReadResponse> boardList = boardService.readAll();
         model.addAttribute("boardList", boardList);
-        return "board/list";
+        return "board/listd";
     }
 
     @PostMapping("/create")
