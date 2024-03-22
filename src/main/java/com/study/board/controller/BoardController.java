@@ -27,7 +27,7 @@ public class BoardController {
     @GetMapping("")
     public String list(Model model){
         List<BoardReadResponse> boardList = boardService.readAll();
-        model.addAttribute("boardList", boardList);
+        model.addAttribute("boardList", boardListd);
         return "board/list";
     }
 
