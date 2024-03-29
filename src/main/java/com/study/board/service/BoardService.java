@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -21,6 +22,11 @@ public class BoardService {
     public BoardCreateResponse write(BoardCreateRequest dto) {
         Board saved = boardRepository.save(BoardCreateRequest.toEntity(dto, null));
         return BoardCreateResponse.toDto(saved);
+    }
+
+    public BoardReadResponse read(Integer id){
+        Board board = boardRepository.findById(id).orElse(null);
+        return BoardReadResponse.toDto(board);
     }
 
     public List<BoardReadResponse> readAll(){

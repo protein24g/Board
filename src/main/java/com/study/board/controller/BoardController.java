@@ -19,16 +19,10 @@ import java.util.List;
 public class BoardController {
     private final BoardService boardService;
 
+    // C(Create)
     @GetMapping("/create")
     public String create_page(){
         return "board/create";
-    }
-
-    @GetMapping("")
-    public String list(Model model){
-        List<BoardReadResponse> boardList = boardService.readAll();
-        model.addAttribute("boardList", boardList);
-        return "board/list";
     }
 
     @PostMapping("/create")
@@ -39,6 +33,26 @@ public class BoardController {
                 ResponseEntity.status(HttpStatus.OK).body(boardCreatResponse) :
                 ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
+
+    // R(Read)
+    @GetMapping("/{id}")
+    public String detail_page(Model model, @PathVariable("id") Integer id){
+        BoardReadResponse boardReadResponse = boardService.read(id);
+        model.addAttribute("board", boardReadResponse);
+        return "board/detail";
+    }
+
+    @GetMapping("")
+    public String list(Model model){
+        List<BoardReadResponse> boardList = boardService.readAll();
+        model.addAttribute("boardList", boardList);
+        return "board/list";
+    }
+
+    // U(Update)
+
+    // D(Delete)
+
 
 
 }
