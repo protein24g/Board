@@ -28,7 +28,7 @@ public class Member {
     private String email;
 
     @Enumerated(EnumType.STRING)
-    private Role role;
+    private String role;
 
     @Column(name = "created_date", updatable = false)
     private LocalDateTime createdDate;
@@ -37,8 +37,7 @@ public class Member {
     private LocalDateTime modifiedDate;
 
     @Builder
-    public Member(Integer id, String userid, String userpw, String email, Role role, LocalDateTime createdDate, LocalDateTime modifiedDate){
-        this.id = id;
+    public Member(String userid, String userpw, String email, String role, LocalDateTime createdDate, LocalDateTime modifiedDate){
         this.userid = userid;
         this.userpw = userpw;
         this.email = email;
