@@ -29,12 +29,13 @@ public class MemberService {
     }
 
     public MemberLoginResponse login(MemberLoginRequest dto) {
-        Member target = memberRepository.findByUserid(dto.getUserid())
-                .orElseThrow(() -> new IllegalArgumentException("아이디가 존재하지 않습니다."));
+        Member target = memberRepository.findByUserid(dto.getUserid());
 
-        if (!passwordEncoder.matches(dto.getUserpw(), target.getUserpw()))
-            throw new IllegalArgumentException("비밀번호가 틀렸습니다.");
-
-        return MemberLoginResponse.toDto(target);
+        if(target != null){
+            if (!passwordEncoder.matches(dto.getUserpw(), target.getUserpw()))
+                throw new IllegalArgumentException("비밀번호가 틀렸습니다.");
+            return MemberLoginResponse.toDto(target);
+        }
+        return null;
     }
 }

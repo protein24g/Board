@@ -1,6 +1,5 @@
 package com.study.member.entity;
 
-import com.study.common.Role;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
