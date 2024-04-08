@@ -18,8 +18,10 @@ public class JoinService {
     private final UserRepository userRepository;
 
     public void join(JoinDTO dto) {
-        // 비밀번호가 null이 아니며, 비밀번호 확인 값과 일치하는지 체크
-        if (dto.getUserPw() != null && dto.getUserPw().equals(dto.getUserPwCheck())) {
+        // 비밀번호 일치 여부 검증
+        if (!dto.isPasswordEqual()) {
+            System.out.println("비밀번호가 null이거나 비밀번호 확인과 일치하지 않습니다.");
+        }else{
             User user = userRepository.findByUserId(dto.getUserId()).orElse(null);
             // 해당 사용자 ID로 등록된 회원이 없는 경우에만 회원가입 진행
             if (user == null) {
@@ -32,11 +34,12 @@ public class JoinService {
                         .createdDate(LocalDateTime.now())
                         .build();
                 userRepository.save(target);
+            }else {
+                // 비밀번호가 null이거나, 비밀번호 확인 값과 일치하지 않는 경우 처리
+                // 예: 로그 출력, 사용자에게 에러 메시지 전달 등
+                System.out.println("이미 등록된 아이디 입니다.");
             }
-        } else {
-            // 비밀번호가 null이거나, 비밀번호 확인 값과 일치하지 않는 경우 처리
-            // 예: 로그 출력, 사용자에게 에러 메시지 전달 등
-            System.out.println("비밀번호가 null이거나 비밀번호 확인과 일치하지 않습니다.");
         }
+
     }
 }

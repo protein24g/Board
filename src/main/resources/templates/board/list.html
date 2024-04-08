@@ -9,6 +9,7 @@
         <table>
             <tr th:each="board : ${boardList}">
                 <td th:text="${board.id}"></td>
+                <td th:text="${board.createDate}"></td>
                 <td th:text="${board.nickName}"></td>
                 <td><a th:href="'/board/'+${board.id}" th:text="${board.title}"></a></td>
                 <td th:text="${board.content}"></td>
