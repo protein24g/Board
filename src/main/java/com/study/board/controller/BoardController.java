@@ -14,10 +14,14 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
-@RequestMapping("/board")
 @RequiredArgsConstructor
 public class BoardController {
     private final BoardService boardService;
+
+    @GetMapping("/")
+    public String indexP(){
+        return "index";
+    }
 
     // C(Create)
     @GetMapping("/create")
@@ -42,7 +46,7 @@ public class BoardController {
         return "board/detail";
     }
 
-    @GetMapping("")
+    @GetMapping("/list")
     public String list(Model model){
         List<BoardReadResponse> boardList = boardService.readAll();
         model.addAttribute("boardList", boardList);

@@ -19,7 +19,7 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
         http
                 .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/", "/login", "/join").permitAll()
+                        .requestMatchers("/", "/login", "/loginProc", "/join", "/joinProc", "/main").permitAll()
                         .requestMatchers("/admin").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 );
@@ -27,7 +27,8 @@ public class SecurityConfig {
         http
                 .formLogin((auth) -> auth
                         .loginPage("/login")
-                        .loginProcessingUrl("/loginProcess")
+                        .loginProcessingUrl("/loginProc")
+                        .defaultSuccessUrl("/", true)
                         .permitAll()
                 );
 
@@ -45,7 +46,7 @@ public class SecurityConfig {
         http
                 .logout((auth) -> auth
                         .logoutUrl("/logout")
-                        .logoutSuccessUrl("/logoutProcess")
+                        .logoutSuccessUrl("/")
                         .deleteCookies("JSESSIONID")
                 );
 

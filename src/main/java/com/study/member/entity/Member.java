@@ -26,22 +26,17 @@ public class Member {
     @Column(nullable = false)
     private String email;
 
-    @Enumerated(EnumType.STRING)
     private String role;
 
     @Column(name = "created_date", updatable = false)
     private LocalDateTime createdDate;
 
-    @Column(name = "modified_date")
-    private LocalDateTime modifiedDate;
-
     @Builder
-    public Member(String userid, String userpw, String email, String role, LocalDateTime createdDate, LocalDateTime modifiedDate){
+    public Member(String userid, String userpw, String email, String role, LocalDateTime createdDate){
         this.userid = userid;
         this.userpw = userpw;
         this.email = email;
         this.role = role;
         this.createdDate = createdDate;
-        this.modifiedDate = modifiedDate;
     }
 }
