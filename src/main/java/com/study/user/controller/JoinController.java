@@ -1,7 +1,7 @@
-package com.study.member.controller;
+package com.study.user.controller;
 
-import com.study.member.dto.JoinDTO;
-import com.study.member.service.JoinService;
+import com.study.user.dto.JoinDTO;
+import com.study.user.service.JoinService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -13,12 +13,12 @@ public class JoinController {
 
     @GetMapping("/join")
     public String joinP(){
-        return "member/join";
+        return "user/join";
     }
 
     @PostMapping("/joinProc")
     public String register(JoinDTO dto){
         joinService.join(dto);
-        return "redirect:/member/login";
+        return "redirect:/user/login";
     }
 }

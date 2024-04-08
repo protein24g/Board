@@ -5,45 +5,11 @@
     <title>Title</title>
 </head>
 <body>
-    <form id="writeForm">
+    <form action="/board/create" method="post">
         <input type="text" name="title" placeholder="제목">
         <input type="text" name="content" placeholder="내용">
+        <input type="hidden" name="_csrf" th:value="${_csrf.token}">
         <button type="submit">작성</button>
     </form>
-
-    <script>
-        document.getElementById("writeForm").addEventListener("submit", function(e){
-            e.preventDefault(); // 폼 기본 제출 방지
-
-            const formData = {
-                title : e.target.title.value,
-                content : e.target.content.value
-            };
-
-            fetch("/board/create", {
-                method : "post",
-                headers : {
-                    "Content-Type" : "application/json"
-                },
-                body : JSON.stringify(formData)
-            })
-            .then(response => {
-                if(response.ok){
-                    return response.json();
-                }else{
-                    return new Error("글 작성 실패");
-                }
-            })
-            .then(data => {
-                alert("글 작성 성공");
-                window.location.href = "/board/list";
-                // window.location.href = `/board/${data.id}`; // data.id는 서버로부터 받은 게시글 ID
-            })
-            .catch(error => {
-                console.error("Error : ", error);
-                alert("글 작성에 실패하였습니다");
-            });
-        });
-    </script>
 </body>
 </html>

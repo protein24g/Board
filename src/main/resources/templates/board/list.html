@@ -1,18 +1,35 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<!-- header -->
+<th:block th:replace="layouts/header :: headerFragment"></th:block>
+
 <body>
-    <table>
-        <tr th:each="board : ${boardList}">
-            <th th:text="${board.id}"></th>
-            <th>
-                <a th:href="'/board/'+${board.id}" th:text="${board.title}"></a>
-            </th>
-            <th th:text="${board.content}"></th>
-        </tr>
-    </table>
+    <div class="container">
+        <table>
+            <tr th:each="board : ${boardList}">
+                <td th:text="${board.id}"></td>
+                <td th:text="${board.nickName}"></td>
+                <td><a th:href="'/board/'+${board.id}" th:text="${board.title}"></a></td>
+                <td th:text="${board.content}"></td>
+            </tr>
+        </table>
+    </div>
+
+    <div sec:authorize="isAuthenticated()">
+        <a href="/board/create"><button th:text="글쓰기"></button></a>
+        <form action="/logout" method="post">
+            <input type="submit" value="로그아웃">
+            <input type="hidden" name="_csrf" th:value="${_csrf.token}">
+        </form>
+    </div>
+
+    <div sec:authorize="isAnonymous()">
+        <a href="/login"><button th:text="로그인"></button></a>
+        <a href="/join"><button th:text="회원가입"></button></a>
+    </div>
+
+    <!-- footer -->
+    <th:block th:replace="layouts/footer :: footerFragment"></th:block>
 </body>
 </html>

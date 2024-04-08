@@ -11,21 +11,16 @@ import lombok.ToString;
 @ToString
 public class BoardReadResponse {
     private Integer id;
+    private String nickName;
     private String title;
     private String content;
 
     @Builder
-    public BoardReadResponse(Integer id, String title, String content){
+    public BoardReadResponse(Integer id, String nickName, String title, String content){
         this.id = id;
+        this.nickName = nickName;
         this.title = title;
         this.content = content;
-    }
 
-    public static BoardReadResponse toDto(Board board) {
-        return BoardReadResponse.builder()
-                .id(board.getId())
-                .title(board.getTitle())
-                .content(board.getContent())
-                .build();
     }
 }

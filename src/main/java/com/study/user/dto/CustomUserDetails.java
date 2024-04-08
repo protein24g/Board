@@ -1,6 +1,6 @@
-package com.study.member.dto;
+package com.study.user.dto;
 
-import com.study.member.entity.Member;
+import com.study.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -11,25 +11,25 @@ import java.util.Collections;
 
 @RequiredArgsConstructor
 public class CustomUserDetails implements UserDetails {
-    private final Member member;
+    private final User user;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Collection<GrantedAuthority> collection = new ArrayList<>();
-        collection.add(() -> member.getRole());
+        collection.add(() -> user.getRole());
         return Collections.emptyList();
     }
 
     @Override
     public String getPassword() {
         // Member 객체에서 비밀번호 정보를 반환합니다.
-        return member.getUserpw();
+        return user.getUserPw();
     }
 
     @Override
     public String getUsername() {
-        // Member 객체에서 사용자명을 반환합니다.
-        return member.getUserid();
+        // User 객체에서 사용자명을 반환합니다.
+        return user.getUserId();
     }
 
     @Override

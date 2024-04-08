@@ -1,4 +1,4 @@
-package com.study.member.controller;
+package com.study.user.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -7,6 +7,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class LoginController {
     @GetMapping("/login")
     public String loginP(){
-        return "member/login";
+        return "user/login";
     }
 }

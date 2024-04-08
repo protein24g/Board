@@ -1,4 +1,4 @@
-package com.study.member.entity;
+package com.study.user.entity;
 
 import com.study.board.entity.Board;
 import jakarta.persistence.*;
@@ -27,17 +27,17 @@ public class Comment {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
-    private Member member;
+    private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "board_id")
     private Board board;
 
     @Builder
-    public Comment(Integer id, String content, Member member, Board board){
+    public Comment(Integer id, String content, User user, Board board){
         this.id = id;
         this.content = content;
-        this.member = member;
+        this.user = user;
         this.board = board;
     }
 }

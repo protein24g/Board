@@ -1,8 +1,8 @@
-package com.study.member.service;
+package com.study.user.service;
 
-import com.study.member.dto.CustomUserDetails;
-import com.study.member.entity.Member;
-import com.study.member.repository.MemberRepository;
+import com.study.user.dto.CustomUserDetails;
+import com.study.user.entity.User;
+import com.study.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -12,13 +12,13 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class CustomUserDetailsService implements UserDetailsService {
-    private final MemberRepository memberRepository;
+    private final UserRepository userRepository;
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Member member = memberRepository.findByUserid(username);
-        if(member != null){
-            return new CustomUserDetails(member);
+    public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException {
+        User user = userRepository.findByUserId(userId).orElse(null);
+        if(user != null){
+            return new CustomUserDetails(user);
         }
         return null;
     }

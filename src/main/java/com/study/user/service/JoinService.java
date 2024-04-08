@@ -1,8 +1,8 @@
-package com.study.member.service;
+package com.study.user.service;
 
-import com.study.member.dto.JoinDTO;
-import com.study.member.entity.Member;
-import com.study.member.repository.MemberRepository;
+import com.study.user.dto.JoinDTO;
+import com.study.user.entity.User;
+import com.study.user.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -15,22 +15,23 @@ import java.time.LocalDateTime;
 @Transactional
 public class JoinService {
     private final PasswordEncoder passwordEncoder;
-    private final MemberRepository memberRepository;
+    private final UserRepository userRepository;
 
     public void join(JoinDTO dto) {
         // 비밀번호가 null이 아니며, 비밀번호 확인 값과 일치하는지 체크
         if (dto.getUserPw() != null && dto.getUserPw().equals(dto.getUserPwCheck())) {
-            Member member = memberRepository.findByUserid(dto.getUserId());
+            User user = userRepository.findByUserId(dto.getUserId()).orElse(null);
             // 해당 사용자 ID로 등록된 회원이 없는 경우에만 회원가입 진행
-            if (member == null) {
-                Member target = Member.builder()
-                        .userid(dto.getUserId())
-                        .userpw(passwordEncoder.encode(dto.getUserPw())) // 비밀번호 인코딩
+            if (user == null) {
+                User target = User.builder()
+                        .userId(dto.getUserId())
+                        .nickName(dto.getNickName())
+                        .userPw(passwordEncoder.encode(dto.getUserPw())) // 비밀번호 인코딩
                         .email(dto.getEmail())
                         .role("ROLE_USER")
                         .createdDate(LocalDateTime.now())
                         .build();
-                memberRepository.save(target);
+                userRepository.save(target);
             }
         } else {
             // 비밀번호가 null이거나, 비밀번호 확인 값과 일치하지 않는 경우 처리
