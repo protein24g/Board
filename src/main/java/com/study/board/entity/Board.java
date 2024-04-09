@@ -1,5 +1,6 @@
 package com.study.board.entity;
 
+import com.study.board.dto.response.BoardResponse;
 import com.study.user.entity.User;
 import jakarta.persistence.*;
 import lombok.Builder;
@@ -41,5 +42,10 @@ public class Board {
         this.view = view;
         this.user = user;
         this.createdDate = createdDate;
+    }
+
+    public void update(String title, String content){
+        this.title = title;
+        this.content = content;
     }
 }

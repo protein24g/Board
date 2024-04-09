@@ -1,21 +1,19 @@
 package com.study.board.service;
 
 import com.study.board.dto.requests.BoardCreateRequest;
-import com.study.board.dto.response.BoardReadResponse;
+import com.study.board.dto.response.BoardResponse;
 import com.study.board.entity.Board;
 import com.study.board.repository.BoardRepository;
+import com.study.user.dto.CustomUserDetails;
 import com.study.user.entity.User;
 import com.study.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -42,9 +40,9 @@ public class BoardService {
         }
     }
 
-    public BoardReadResponse read(Integer id){
+    public BoardResponse read(Integer id){
         Board board = boardRepository.findById(id).orElse(null);
-        return BoardReadResponse.builder()
+        return BoardResponse.builder()
                 .id(board.getId())
                 .nickName(board.getUser() != null ? board.getUser().getNickName() : null)
                 .title(board.getTitle())
@@ -52,15 +50,53 @@ public class BoardService {
                 .build();
     }
 
-    public List<BoardReadResponse> readAll(){
+    public List<BoardResponse> readAll(){
         List<Board> boards = boardRepository.findAll();
         return boards.stream()
-                .map(board -> BoardReadResponse.builder()
+                .map(board -> BoardResponse.builder()
                         .id(board.getId())
                         .nickName(board.getUser() != null ? board.getUser().getNickName() : null)
                         .title(board.getTitle())
                         .content(board.getContent())
                         .build())
                 .collect(Collectors.toList());
+    }
+
+    public BoardResponse editP(Integer id) {
+        Board board = boardRepository.findById(id).orElse(null);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
+        if(!board.getUser().getUserId().equals(customUserDetails.getUsername())) {
+            System.out.println("게시글 작성자만 수정 가능합니다");
+            return null;
+        }else{
+            BoardResponse response = BoardResponse.builder()
+                    .id(board.getId())
+                    .title(board.getTitle())
+                    .content(board.getContent())
+                    .createdDate(board.getCreatedDate())
+                    .build();
+            return response;
+        }
+    }
+
+    public BoardResponse edit(BoardCreateRequest dto, Integer id) {
+        Board board = boardRepository.findById(id).orElse(null);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
+        if(!board.getUser().getUserId().equals(customUserDetails.getUsername())) {
+            System.out.println("게시글 작성자만 수정 가능합니다");
+            return null;
+        }else{
+            board.update(dto.getTitle(), dto.getContent());
+            BoardResponse response = BoardResponse.builder()
+                    .id(board.getId())
+                    .title(board.getTitle())
+                    .content(board.getContent())
+                    .createdDate(board.getCreatedDate())
+                    .build();
+            boardRepository.save(board);
+            return response;
+        }
     }
 }

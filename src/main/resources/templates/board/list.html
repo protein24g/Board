@@ -1,15 +1,18 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-
-<!-- header -->
-<th:block th:replace="layouts/header :: headerFragment"></th:block>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <th:block th:replace="layouts/header.html :: headerFragment"></th:block>
+    <!-- 여기에 CSS 파일을 포함할 수 있습니다 -->
+</head>
 
 <body>
+    <!-- 본문 내용 -->
     <div class="container">
         <table>
             <tr th:each="board : ${boardList}">
                 <td th:text="${board.id}"></td>
-                <td th:text="${board.createDate}"></td>
+                <td th:text="${board.createdDate}"></td>
                 <td th:text="${board.nickName}"></td>
                 <td><a th:href="'/board/'+${board.id}" th:text="${board.title}"></a></td>
                 <td th:text="${board.content}"></td>
@@ -31,6 +34,6 @@
     </div>
 
     <!-- footer -->
-    <th:block th:replace="layouts/footer :: footerFragment"></th:block>
+    <th:block th:replace="layouts/footer.html :: footerFragment"></th:block>
 </body>
 </html>

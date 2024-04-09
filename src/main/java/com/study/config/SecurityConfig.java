@@ -35,7 +35,7 @@ public class SecurityConfig {
 
         http
                 .sessionManagement((auth) -> auth
-                        .maximumSessions(1) // 최대 세션 허용 수
+                        .maximumSessions(3) // 최대 세션 허용 수
                         .maxSessionsPreventsLogin(true) // false = 기존 세션 만료
                 );
 
