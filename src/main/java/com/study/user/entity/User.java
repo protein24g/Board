@@ -34,7 +34,6 @@ public class User {
 
     private String role;
 
-    @Column(name = "created_date", updatable = false)
     private LocalDateTime createdDate;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY) // Board 엔티티의 member 필드에 의해 매핑됨

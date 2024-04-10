@@ -45,6 +45,7 @@ public class BoardService {
         return BoardResponse.builder()
                 .id(board.getId())
                 .nickName(board.getUser() != null ? board.getUser().getNickName() : null)
+                .createdDate(board.getCreatedDate())
                 .title(board.getTitle())
                 .content(board.getContent())
                 .build();
@@ -58,6 +59,7 @@ public class BoardService {
                         .nickName(board.getUser() != null ? board.getUser().getNickName() : null)
                         .title(board.getTitle())
                         .content(board.getContent())
+                        .createdDate(board.getCreatedDate())
                         .build())
                 .collect(Collectors.toList());
     }
@@ -84,6 +86,10 @@ public class BoardService {
         Board board = boardRepository.findById(id).orElse(null);
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
+
+
+        System.out.println(board.getUser().getUserId() + "a");
+        System.out.println(customUserDetails.getUsername() + "b");
         if(!board.getUser().getUserId().equals(customUserDetails.getUsername())) {
             System.out.println("게시글 작성자만 수정 가능합니다");
             return null;
@@ -98,5 +104,20 @@ public class BoardService {
             boardRepository.save(board);
             return response;
         }
+    }
+
+    public boolean delete(Integer id) {
+        Board board = boardRepository.findById(id).orElse(null);
+        if(board != null){
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
+            if(!board.getUser().getUserId().equals(customUserDetails.getUsername()))
+                return false;
+            else{
+                boardRepository.delete(board);
+                return true;
+            }
+        }
+        return false;
     }
 }

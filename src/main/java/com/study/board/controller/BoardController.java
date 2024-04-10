@@ -22,7 +22,6 @@ public class BoardController {
 
     @GetMapping("/")
     public String indexP(Model model){
-
         return "redirect:/board/list";
     }
 
@@ -44,8 +43,10 @@ public class BoardController {
         BoardResponse boardResponse = boardService.read(id);
         model.addAttribute("board", boardResponse);
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
-        model.addAttribute("nickName", customUserDetails.getNickName());
+        if(!authentication.getName().equals("anonymousUser")) {
+            CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
+            model.addAttribute("nickName", customUserDetails.getNickName());
+        }
         return "board/detail";
     }
 
@@ -70,7 +71,9 @@ public class BoardController {
 
     @PostMapping("/board/edit/{id}")
     public String edit(BoardCreateRequest dto, @PathVariable("id") Integer id, RedirectAttributes redirectAttributes){
+        System.out.println("asddsadsasadsadsadsadsads");
         BoardResponse board = boardService.edit(dto, id);
+        System.out.println(board);
         if(board != null)
             redirectAttributes.addFlashAttribute("message", "수정 완료");
         else
@@ -79,7 +82,13 @@ public class BoardController {
     }
 
     // D(Delete)
-
-
-
+    @PostMapping("/board/{id}")
+    public String delete(@PathVariable("id") Integer id){
+        boolean response = boardService.delete(id);
+        if(response)
+            System.out.println("삭제 완료");
+        else
+            System.out.println("삭제 실패");
+        return "redirect:/board/list";
+    }
 }

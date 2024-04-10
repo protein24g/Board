@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Entity
 @Getter
@@ -28,7 +29,6 @@ public class Board {
 
     private Integer view;
 
-    @Column(name = "created_date", updatable = false)
     private LocalDateTime createdDate;
 
     @ManyToOne(fetch = FetchType.LAZY) // 엔티티 정보가 실제로 접근할 때까지 로딩 지연

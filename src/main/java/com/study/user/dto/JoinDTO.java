@@ -17,7 +17,7 @@ public class JoinDTO {
     private String nickName;
 
     @NotBlank(message = "비밀번호는 필수 입력 값입니다.")
-    @Size(min = 3, max = 12, message = "비밀번호는 8자 이상, 15자 이하로 설정해야 합니다.")
+    @Size(min = 2, max = 20, message = "비밀번호는 8자 이상, 15자 이하로 설정해야 합니다.")
     private String userPw;
 
     @NotBlank(message = "비밀번호 확인은 필수 입력 값입니다.")
