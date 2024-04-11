@@ -23,13 +23,9 @@
 
     <body>
         <th:block th:replace="layouts/header.html :: headerFragment"></th:block>
-
         <div class="container">
             <a href="/board/list" class="btn btn-dark">목록</a>
-
-
             <div th:if="${board.nickName == nickName}">
-
                 <form th:action="@{/board/edit/{id}(id=${board.getId()})}" method="post" id="editForm">
                     <table class="table">
                         <tr class="text-center p-5 bg-primary">
@@ -52,13 +48,10 @@
                             </td>
                         </tr>
                     </table>
-
                     <input type="hidden" name="_csrf" th:value="${_csrf.token}">
                     <button type="submit" class="btn btn-primary">수정</button>
                 </form>
-
             </div>
-
         </div>
         <!-- footer -->
         <th:block th:replace="layouts/footer.html :: footerFragment"></th:block>

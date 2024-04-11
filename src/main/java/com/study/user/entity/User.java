@@ -20,16 +20,16 @@ public class User {
     @Column
     private Integer id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String userId;
 
-    @Column(nullable = false, name = "nickName")
+    @Column(nullable = false, name = "nickName", unique = true)
     private String nickName;
 
     @Column(nullable = false)
     private String userPw;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String email;
 
     private String role;

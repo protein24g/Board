@@ -8,11 +8,13 @@ import com.study.user.dto.CustomUserDetails;
 import com.study.user.entity.User;
 import com.study.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,22 +27,22 @@ public class BoardService {
     public void write(BoardCreateRequest dto) {
         // 현재 인증된 사용자의 Authentication 객체를 얻음
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-        // Authentication 객체로부터 사용자의 이름(또는 이메일 등의 식별 정보)을 얻음
-        String nickName = authentication.getName();
-        User user = userRepository.findByUserId(nickName).orElse(null);
-        if (user != null){
-            boardRepository.save(Board.builder()
-                    .title(dto.getTitle())
-                    .content(dto.getContent())
-                    .view(0)
-                    .user(user)
-                    .createdDate(LocalDateTime.now())
-                    .build());
+        if(!(authentication instanceof AnonymousAuthenticationToken)){
+            CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
+            User user = userRepository.findByUserId(customUserDetails.getUsername()).orElse(null);
+            if (user != null){
+                boardRepository.save(Board.builder()
+                        .title(dto.getTitle())
+                        .content(dto.getContent())
+                        .view(0)
+                        .user(user)
+                        .createdDate(LocalDateTime.now())
+                        .build());
+            }
         }
     }
 
-    public BoardResponse read(Integer id){
+    public BoardResponse findById(Integer id){
         Board board = boardRepository.findById(id).orElse(null);
         return BoardResponse.builder()
                 .id(board.getId())
@@ -51,7 +53,7 @@ public class BoardService {
                 .build();
     }
 
-    public List<BoardResponse> readAll(){
+    public List<BoardResponse> findAll(){
         List<Board> boards = boardRepository.findAll();
         return boards.stream()
                 .map(board -> BoardResponse.builder()
@@ -62,6 +64,19 @@ public class BoardService {
                         .createdDate(board.getCreatedDate())
                         .build())
                 .collect(Collectors.toList());
+    }
+
+    public List<BoardResponse> findAllByUserId(Integer Id){
+        List<Board> boards = boardRepository.findAllByUserId(Id).orElse(null);
+        List<BoardResponse> boardResponses = boards.stream().map(board -> {
+            return BoardResponse.builder()
+                    .id(board.getId())
+                    .title(board.getTitle())
+                    .content(board.getContent())
+                    .createdDate(board.getCreatedDate()) // 날짜 형식 변환
+                    .build(); // 빌더를 사용하여 BoardResponse 객체 생성
+        }).collect(Collectors.toList());
+        return boardResponses;
     }
 
     public BoardResponse editP(Integer id) {
@@ -83,39 +98,41 @@ public class BoardService {
     }
 
     public BoardResponse edit(BoardCreateRequest dto, Integer id) {
-        Board board = boardRepository.findById(id).orElse(null);
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
-
-
-        System.out.println(board.getUser().getUserId() + "a");
-        System.out.println(customUserDetails.getUsername() + "b");
-        if(!board.getUser().getUserId().equals(customUserDetails.getUsername())) {
-            System.out.println("게시글 작성자만 수정 가능합니다");
-            return null;
-        }else{
-            board.update(dto.getTitle(), dto.getContent());
-            BoardResponse response = BoardResponse.builder()
-                    .id(board.getId())
-                    .title(board.getTitle())
-                    .content(board.getContent())
-                    .createdDate(board.getCreatedDate())
-                    .build();
-            boardRepository.save(board);
-            return response;
+        if(!(authentication instanceof AnonymousAuthenticationToken)) {
+            CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
+            Board board = boardRepository.findById(id).orElse(null);
+            if (!board.getUser().getUserId().equals(customUserDetails.getUsername())) {
+                System.out.println("게시글 작성자만 수정 가능합니다");
+                return null;
+            } else {
+                board.update(dto.getTitle(), dto.getContent());
+                BoardResponse response = BoardResponse.builder()
+                        .id(board.getId())
+                        .title(board.getTitle())
+                        .content(board.getContent())
+                        .createdDate(board.getCreatedDate())
+                        .build();
+                boardRepository.save(board);
+                return response;
+            }
         }
+        System.out.println("로그인 후 이용 하세요.");
+        return null;
     }
 
     public boolean delete(Integer id) {
-        Board board = boardRepository.findById(id).orElse(null);
-        if(board != null){
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
-            if(!board.getUser().getUserId().equals(customUserDetails.getUsername()))
-                return false;
-            else{
-                boardRepository.delete(board);
-                return true;
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if(!(authentication instanceof AnonymousAuthenticationToken)){
+            Board board = boardRepository.findById(id).orElse(null);
+            if(board != null){
+                CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
+                if(!board.getUser().getUserId().equals(customUserDetails.getUsername()))
+                    return false;
+                else{
+                    boardRepository.delete(board);
+                    return true;
+                }
             }
         }
         return false;

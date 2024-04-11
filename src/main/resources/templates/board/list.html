@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
     <head>
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -31,7 +31,9 @@
                     </tr>
                 </tbody>
             </table>
-            <a href="/board/create" class="btn btn-primary">글쓰기</a>
+            <div sec:authorize="isAuthenticated()">
+                <a href="/board/create" class="btn btn-primary">글쓰기</a>
+            </div>
         </div>
 
         <!-- footer -->

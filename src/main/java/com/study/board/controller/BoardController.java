@@ -2,10 +2,10 @@ package com.study.board.controller;
 
 import com.study.board.dto.requests.BoardCreateRequest;
 import com.study.board.dto.response.BoardResponse;
-import com.study.board.entity.Board;
 import com.study.board.service.BoardService;
 import com.study.user.dto.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -25,6 +25,19 @@ public class BoardController {
         return "redirect:/board/list";
     }
 
+    @GetMapping("/mypage")
+    public String mypage(Model model){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if(!(authentication instanceof AnonymousAuthenticationToken)){
+            CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
+
+            List<BoardResponse> boardResponses = boardService.findAllByUserId(customUserDetails.getId());
+            model.addAttribute("boardList", boardResponses);
+            return "user/mypage";
+        }
+        return "redirect:/board/list";
+    }
+
     // C(Create)
     @GetMapping("/board/create")
     public String createP(){
@@ -40,10 +53,10 @@ public class BoardController {
     // R(Read)
     @GetMapping("/board/{id}")
     public String detailP(Model model, @PathVariable("id") Integer id){
-        BoardResponse boardResponse = boardService.read(id);
+        BoardResponse boardResponse = boardService.findById(id);
         model.addAttribute("board", boardResponse);
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if(!authentication.getName().equals("anonymousUser")) {
+        if(!(authentication instanceof AnonymousAuthenticationToken)) {
             CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
             model.addAttribute("nickName", customUserDetails.getNickName());
         }
@@ -52,7 +65,7 @@ public class BoardController {
 
     @GetMapping("/board/list")
     public String listP(Model model){
-        List<BoardResponse> boardList = boardService.readAll();
+        List<BoardResponse> boardList = boardService.findAll();
         model.addAttribute("boardList", boardList);
         return "board/list";
     }
@@ -71,9 +84,7 @@ public class BoardController {
 
     @PostMapping("/board/edit/{id}")
     public String edit(BoardCreateRequest dto, @PathVariable("id") Integer id, RedirectAttributes redirectAttributes){
-        System.out.println("asddsadsasadsadsadsadsads");
         BoardResponse board = boardService.edit(dto, id);
-        System.out.println(board);
         if(board != null)
             redirectAttributes.addFlashAttribute("message", "수정 완료");
         else

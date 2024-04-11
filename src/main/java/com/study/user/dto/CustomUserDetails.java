@@ -28,11 +28,15 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public String getUsername() {
-        // User 객체에서 사용자명을 반환합니다.
         return user.getUserId();
     }
 
-    // 사용자 닉네임을 반환하는 메서드 추가
+    // 사용자 계정 id 반환
+    public Integer getId(){
+        return user.getId();
+    }
+
+    // 사용자 아이디 반환하는 메서드 추가
     public String getNickName() {
         return user.getNickName();
     }
