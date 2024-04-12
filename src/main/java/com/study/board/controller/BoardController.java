@@ -4,6 +4,7 @@ import com.study.board.dto.requests.BoardCreateRequest;
 import com.study.board.dto.response.BoardResponse;
 import com.study.board.service.BoardService;
 import com.study.user.dto.CustomUserDetails;
+import jakarta.websocket.server.PathParam;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
@@ -27,13 +28,13 @@ public class BoardController {
     }
 
     @GetMapping("/mypage")
-    public String mypage(Model model){
+    public String mypage(Model model, @RequestParam(value = "page", defaultValue = "0") Integer page){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if(!(authentication instanceof AnonymousAuthenticationToken)){
             CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
 
-            List<BoardResponse> boardResponses = boardService.findAllByUserId(customUserDetails.getId());
-            model.addAttribute("boardList", boardResponses);
+            Page<BoardResponse> boardResponses = boardService.findAllByUserId(customUserDetails.getId(), page);
+            model.addAttribute("paging", boardResponses);
             return "user/mypage";
         }
         return "redirect:/board/list";

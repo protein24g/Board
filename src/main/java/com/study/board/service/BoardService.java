@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -28,7 +29,7 @@ public class BoardService {
     private final UserRepository userRepository;
 
     public Page<BoardResponse> getList(Integer page){
-        Pageable pageable = PageRequest.of(page, 10);
+        Pageable pageable = PageRequest.of(page, 10, Sort.by("id").descending());
         Page<Board> boards = boardRepository.findAll(pageable);
 
         Page<BoardResponse> boardResponses = boards
@@ -84,16 +85,18 @@ public class BoardService {
                 .collect(Collectors.toList());
     }
 
-    public List<BoardResponse> findAllByUserId(Integer Id){
-        List<Board> boards = boardRepository.findAllByUserId(Id).orElse(null);
-        List<BoardResponse> boardResponses = boards.stream().map(board -> {
+    public Page<BoardResponse> findAllByUserId(Integer id, Integer page){
+        Pageable pageable = PageRequest.of(page, 10, Sort.by("id").descending());
+
+        Page<Board> boards = boardRepository.findAllByUserId(id, pageable).orElse(null);
+        Page<BoardResponse> boardResponses = boards.map(board -> {
             return BoardResponse.builder()
                     .id(board.getId())
                     .title(board.getTitle())
                     .content(board.getContent())
                     .createdDate(board.getCreatedDate()) // 날짜 형식 변환
                     .build(); // 빌더를 사용하여 BoardResponse 객체 생성
-        }).collect(Collectors.toList());
+        });
         return boardResponses;
     }
 

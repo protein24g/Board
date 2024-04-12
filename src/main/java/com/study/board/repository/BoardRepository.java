@@ -9,8 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface BoardRepository extends JpaRepository<Board, Integer> {
-    @Override
     Optional<Board> findById(Integer id);
-    Optional<List<Board>> findAllByUserId(Integer userId);
+    Optional<Page<Board>> findAllByUserId(Integer id, Pageable pageable);
     Page<Board> findAll(Pageable pageable);
 }

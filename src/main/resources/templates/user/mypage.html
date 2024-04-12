@@ -6,8 +6,17 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Document</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+        <script>
+            function confirmDelete(event, id) {
+                event.preventDefault(); // 폼 제출 방지
+                const confirmation = confirm("삭제하시겠습니까?");
+                if (confirmation) {
+                    // 사용자가 '확인'을 선택한 경우, 폼 제출
+                    document.getElementById('deleteForm' + id).submit();
+                }
+            }
+        </script>
     </head>
-
     <body>
         <th:block th:replace="layouts/header.html :: headerFragment"></th:block>
 
@@ -24,25 +33,39 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr th:each="board : ${boardList}">
-                        <td th:text="${board.id}"></td>
-                        <td th:text="${#temporals.format(board.createdDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
-                        <td><a th:href="'/board/'+${board.id}" th:text="${board.title}"></a></td>
+                    <tr th:each="paging : ${paging}">
+                        <td th:text="${paging.id}"></td>
+                        <td th:text="${#temporals.format(paging.createdDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                        <td><a th:href="'/board/'+${paging.id}" th:text="${paging.title}"></a></td>
                         <td>
                             <!-- 각 게시글에 대한 고유한 숨겨진 폼 -->
-                            <form th:id="'deleteForm' + ${board.id}" th:action="'/board/' + ${board.id}" method="post" style="display: none;">
+                            <form th:id="'deleteForm' + ${paging.id}" th:action="'/board/' + ${paging.id}" method="post">
                                 <input type="hidden" name="_csrf" th:value="${_csrf.token}">
+                                <button type="submit" class="btn btn-danger" th:onclick="'confirmDelete(event, ' + ${paging.id} + ');'">삭제</button>
                             </form>
-
-                            <!-- 해당 폼의 고유한 ID를 참조하는 삭제 버튼 -->
-                            <a href="#" class="btn btn-danger" th:onclick="'document.getElementById(\'deleteForm' + ${board.id} + '\').submit(); return false;'">삭제</a>
                         </td>
                     </tr>
                     </tbody>
                 </table>
-                <div sec:authorize="isAuthenticated()">
-                    <a href="/board/create" class="btn btn-primary">글쓰기</a>
-                </div>
+
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination justify-content-center">
+                        <li class="page-item" th:classappend="${paging.first} ? 'disabled' : ''">
+                            <a class="page-link" th:href="@{/mypage(page=${paging.getNumber() - 1})}">Previous</a>
+                        </li>
+                        <li class="page-item" th:each="pageNum : ${#numbers.sequence(
+            (paging.getNumber() - 5 <= 0 ? 0 : paging.getNumber() - 5),
+            (paging.getNumber() + 4 <= paging.getTotalPages() - 1 ?  paging.getNumber() + 4 : paging.getTotalPages() - 1)
+        )}" th:classappend="${pageNum == paging.getNumber()} ? 'active' : ''">
+                            <a class="page-link" th:text="${pageNum + 1}" th:href="@{/mypage(page=${pageNum})}"></a>
+                        </li>
+                        <li class="page-item" th:classappend="${paging.last} ? 'disabled' : ''">
+                            <a class="page-link" th:href="@{/mypage(page=${paging.getNumber() + 1})}">Next</a>
+                        </li>
+                    </ul>
+                </nav>
+
+                <a href="/board/create" class="btn btn-primary">글쓰기</a>
             </div>
         </div>
 
