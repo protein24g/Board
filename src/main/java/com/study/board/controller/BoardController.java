@@ -96,12 +96,13 @@ public class BoardController {
 
     // D(Delete)
     @PostMapping("/board/{id}")
-    public String delete(@PathVariable("id") Integer id){
+    public String delete(@PathVariable("id") Integer id, String redirectUrl){
+        System.out.println(redirectUrl);
         boolean response = boardService.delete(id);
         if(response)
             System.out.println("삭제 완료");
         else
             System.out.println("삭제 실패");
-        return "redirect:/board/list";
+        return "redirect:" + redirectUrl;
     }
 }

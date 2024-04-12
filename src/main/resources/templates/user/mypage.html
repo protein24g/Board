@@ -38,9 +38,9 @@
                         <td th:text="${#temporals.format(paging.createdDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
                         <td><a th:href="'/board/'+${paging.id}" th:text="${paging.title}"></a></td>
                         <td>
-                            <!-- 각 게시글에 대한 고유한 숨겨진 폼 -->
                             <form th:id="'deleteForm' + ${paging.id}" th:action="'/board/' + ${paging.id}" method="post">
                                 <input type="hidden" name="_csrf" th:value="${_csrf.token}">
+                                <input type="hidden" name="redirectUrl" value="/mypage">
                                 <button type="submit" class="btn btn-danger" th:onclick="'confirmDelete(event, ' + ${paging.id} + ');'">삭제</button>
                             </form>
                         </td>
