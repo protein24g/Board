@@ -4,6 +4,7 @@ import com.study.board.entity.Board;
 import com.study.board.repository.BoardRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDateTime;
@@ -17,14 +18,14 @@ public class BoardApplicationTests {
 
     @Test
     public void boardtest(){
-        boardRepository.save(Board.builder()
-                .title("테스트1")
-                .content("테스트1내용")
-                .createdDate(LocalDateTime.now())
-                .build());
-        List<Board> boards = boardRepository.findAll();
-        for(Board i: boards){
-            System.out.println(i);
+        for(int i = 0; i <50; i++){
+            boardRepository.save(Board.builder()
+                    .title(String.format("글작성[%d]",i))
+                    .content("테스트1내용")
+                    .user(null)
+                    .createdDate(LocalDateTime.now())
+                    .build());
+            List<Board> boards = boardRepository.findAll();
         }
     }
 

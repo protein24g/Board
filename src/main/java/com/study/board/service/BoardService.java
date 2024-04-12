@@ -8,6 +8,9 @@ import com.study.user.dto.CustomUserDetails;
 import com.study.user.entity.User;
 import com.study.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -23,6 +26,21 @@ import java.util.stream.Collectors;
 public class BoardService {
     private final BoardRepository boardRepository;
     private final UserRepository userRepository;
+
+    public Page<BoardResponse> getList(Integer page){
+        Pageable pageable = PageRequest.of(page, 10);
+        Page<Board> boards = boardRepository.findAll(pageable);
+
+        Page<BoardResponse> boardResponses = boards
+                .map(board -> BoardResponse.builder()
+                            .id(board.getId())
+                            .nickName(board.getUser() != null ? board.getUser().getNickName() : null)
+                            .title(board.getTitle())
+                            .content(board.getContent())
+                            .createdDate(board.getCreatedDate())
+                            .build());
+        return boardResponses;
+    }
 
     public void write(BoardCreateRequest dto) {
         // 현재 인증된 사용자의 Authentication 객체를 얻음
@@ -47,9 +65,9 @@ public class BoardService {
         return BoardResponse.builder()
                 .id(board.getId())
                 .nickName(board.getUser() != null ? board.getUser().getNickName() : null)
-                .createdDate(board.getCreatedDate())
                 .title(board.getTitle())
                 .content(board.getContent())
+                .createdDate(board.getCreatedDate())
                 .build();
     }
 

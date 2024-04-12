@@ -22,7 +22,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr th:each="board : ${boardList}">
+                    <tr th:each="board : ${paging}">
                         <td th:text="${board.id}"></td>
                         <td th:text="${#temporals.format(board.createdDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
 
@@ -31,6 +31,27 @@
                     </tr>
                 </tbody>
             </table>
+
+
+            <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item" th:classappend="${paging.first} ? 'disabled' : ''">
+                        <a class="page-link" th:href="@{/board/list(page=${paging.getNumber() - 1})}">Previous</a>
+                    </li>
+                    <li class="page-item" th:each="pageNum : ${#numbers.sequence(
+            (paging.getNumber() - 5 <= 0 ? 0 : paging.getNumber() - 5),
+            (paging.getNumber() + 4 <= paging.getTotalPages() - 1 ?  paging.getNumber() + 4 : paging.getTotalPages() - 1)
+        )}" th:classappend="${pageNum == paging.getNumber()} ? 'active' : ''">
+                        <a class="page-link" th:text="${pageNum + 1}" th:href="@{/board/list(page=${pageNum})}"></a>
+                    </li>
+                    <li class="page-item" th:classappend="${paging.last} ? 'disabled' : ''">
+                        <a class="page-link" th:href="@{/board/list(page=${paging.getNumber() + 1})}">Next</a>
+                    </li>
+                </ul>
+            </nav>
+
+
+
             <div sec:authorize="isAuthenticated()">
                 <a href="/board/create" class="btn btn-primary">글쓰기</a>
             </div>

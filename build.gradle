@@ -33,7 +33,7 @@ dependencies {
 
 // 데이터베이스 (데이터베이스 연결 및 SQL 실행을 위한 의존성)
 	runtimeOnly 'org.mariadb.jdbc:mariadb-java-client' // MariaDB JDBC 드라이버
-	implementation "com.h2database:h2" // H2 데이터베이스 (인메모리 및 임베디드 모드 지원)
+	runtimeOnly "com.h2database:h2" // H2 데이터베이스 (인메모리 및 임베디드 모드 지원)
 
 // 개발 도구 (개발 시 유용한 도구 및 플러그인)
 	compileOnly 'org.projectlombok:lombok' // Lombok (자동으로 getter, setter, toString 등을 생성해주는 라이브러리)

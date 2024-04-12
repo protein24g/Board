@@ -5,6 +5,7 @@ import com.study.board.dto.response.BoardResponse;
 import com.study.board.service.BoardService;
 import com.study.user.dto.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -64,9 +65,9 @@ public class BoardController {
     }
 
     @GetMapping("/board/list")
-    public String listP(Model model){
-        List<BoardResponse> boardList = boardService.findAll();
-        model.addAttribute("boardList", boardList);
+    public String listP(Model model, @RequestParam(value="page", defaultValue = "0") Integer page){
+        Page<BoardResponse> paging = boardService.getList(page);
+        model.addAttribute("paging", paging);
         return "board/list";
     }
 
