@@ -27,7 +27,7 @@
             <a href="/board/list" class="btn btn-dark">목록</a>
             <div th:if="${board.nickName == nickName}">
                 <form th:action="@{/board/edit/{id}(id=${board.getId()})}" method="post" id="editForm">
-                    <table class="table">
+                    <table class="table table-borderless">
                         <tr class="text-center p-5 bg-primary">
                             <td class="col-1 py-4 vertical-align: middle;">
                                 <input th:value="${board.getId()}" class="form-control" type="text" aria-label="Disabled input example" disabled>

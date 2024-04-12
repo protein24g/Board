@@ -14,7 +14,7 @@
         <div class="container">
             <br><a href="/board/list" class="btn btn-dark">목록</a>
 
-            <table class="table">
+            <table class="table table table-borderless">
                 <th>번호</th>
                 <th>제목</th>
                 <th>작성자</th>
@@ -40,6 +40,12 @@
                     </td>
                 </tr>
             </table>
+
+            댓글
+            <div>
+                asdasdadsad
+            </div>
+
             <div th:if="${board.nickName == nickName}">
                 <a th:href="'/board/edit/' + ${board.id}" class="btn btn-primary">수정</a>
                 <!-- 숨겨진 폼 -->
