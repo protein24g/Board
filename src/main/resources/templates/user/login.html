@@ -16,8 +16,6 @@
         </script>
     </head>
     <body>
-        <th:block th:replace="layouts/header.html :: headerFragment"></th:block>
-
         <div class="container">
             <div class="d-flex justify-content-center align-items-center vh-100">
                 <div class="card text-center" style="width: 18rem;">
@@ -29,13 +27,11 @@
                             <input type="hidden" name="_csrf" th:value="${_csrf.token}">
                             <p><button type="submit" class="btn btn-primary">로그인</button></p>
                         </form>
+                        <a href="/join" class="btn btn-primary">회원가입</a>
                     </div>
                 </div>
             </div>
         </div>
-
-        <!-- footer -->
-        <th:block th:replace="layouts/footer.html :: footerFragment"></th:block>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     </body>
 </html>

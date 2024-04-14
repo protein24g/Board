@@ -5,7 +5,6 @@ import com.study.board.repository.BoardRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import java.time.LocalDateTime;
 
 @SpringBootTest
@@ -13,9 +12,6 @@ public class BoardApplicationTests {
 
     @Autowired
     private BoardRepository boardRepository;
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
 
     @Test
     public void boardtest(){

@@ -22,31 +22,44 @@
 
         <div class = "container">
             <div sec:authorize="isAuthenticated()">
-                내가 작성한 글
-                <table class="table text-center">
-                    <thead class="table-light">
-                    <tr>
-                        <th class="col-sm-1">#</th>
-                        <th class="col-sm-2">날짜</th>
-                        <th class="col-sm-7">제목</th>
-                        <th class="col-sm-2">삭제</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr th:each="paging : ${paging}">
-                        <td th:text="${paging.id}"></td>
-                        <td th:text="${#temporals.format(paging.createdDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
-                        <td><a th:href="'/board/'+${paging.id}" th:text="${paging.title}"></a></td>
-                        <td>
-                            <form th:id="'deleteForm' + ${paging.id}" th:action="'/board/' + ${paging.id}" method="post">
-                                <input type="hidden" name="_csrf" th:value="${_csrf.token}">
-                                <input type="hidden" name="redirectUrl" value="/mypage">
-                                <button type="submit" class="btn btn-danger" th:onclick="'confirmDelete(event, ' + ${paging.id} + ');'">삭제</button>
-                            </form>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
+
+                <div class="row">
+                    <div class="col-3">
+                        <div class="card" style="width: 18rem;">
+                            <img src="https://cdn-icons-png.flaticon.com/128/4530/4530959.png" style="margin: auto" width="50%">
+                            <div class="card-body">
+                                <h5 class="card-title" th:text="${nickName} + '(' + ${userId} + ')'"></h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-9">
+                        <table class="table text-center">
+                            <thead class="table-light">
+                            <tr>
+                                <th class="col-sm-1">#</th>
+                                <th class="col-sm-2">날짜</th>
+                                <th class="col-sm-7">제목</th>
+                                <th class="col-sm-2">삭제</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="paging : ${paging}">
+                                <td th:text="${paging.id}"></td>
+                                <td th:text="${#temporals.format(paging.createdDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                                <td><a th:href="'/board/'+${paging.id}" th:text="${paging.title}"></a></td>
+                                <td>
+                                    <form th:id="'deleteForm' + ${paging.id}" th:action="'/board/' + ${paging.id}" method="post">
+                                        <input type="hidden" name="_csrf" th:value="${_csrf.token}">
+                                        <input type="hidden" name="redirectUrl" value="/mypage">
+                                        <button type="submit" class="btn btn-danger" th:onclick="'confirmDelete(event, ' + ${paging.id} + ');'">삭제</button>
+                                    </form>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
 
                 <nav aria-label="Page navigation example">
                     <ul class="pagination justify-content-center">
@@ -64,8 +77,6 @@
                         </li>
                     </ul>
                 </nav>
-
-                <a href="/board/create" class="btn btn-primary">글쓰기</a>
             </div>
         </div>
 

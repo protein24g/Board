@@ -34,6 +34,8 @@ public class BoardController {
             CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
 
             Page<BoardResponse> boardResponses = boardService.findAllByUserId(customUserDetails.getId(), page);
+            model.addAttribute("nickName", customUserDetails.getNickName());
+            model.addAttribute("userId", customUserDetails.getUsername());
             model.addAttribute("paging", boardResponses);
             return "user/mypage";
         }
