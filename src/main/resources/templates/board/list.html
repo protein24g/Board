@@ -26,7 +26,6 @@
                     <tr th:each="paging : ${paging}">
                         <td th:text="${paging.id}"></td>
                         <td th:text="${#temporals.format(paging.createdDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
-
                         <td th:text="${paging.nickName}"></td>
                         <td><a th:href="'/board/'+${paging.id}" th:text="${paging.title}"></a></td>
                     </tr>

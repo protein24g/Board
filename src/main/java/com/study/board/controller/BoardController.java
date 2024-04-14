@@ -70,6 +70,7 @@ public class BoardController {
     @GetMapping("/board/list")
     public String listP(Model model, @RequestParam(value="page", defaultValue = "0") Integer page){
         Page<BoardResponse> paging = boardService.getList(page);
+        model.addAttribute("currentPage", "board");
         model.addAttribute("paging", paging);
         return "board/list";
     }

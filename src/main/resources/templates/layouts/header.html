@@ -32,10 +32,10 @@
                                         </ul>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link active" aria-current="page" href="/board/list">자유게시판</a>
+                                        <a th:classappend="${currentPage == 'board' ? 'fw-bold active' : ''}" class="nav-link" aria-current="page" href="/board/list">자유게시판</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link active" aria-current="page" href="/anonboard/list">비밀게시판</a>
+                                        <a th:classappend="${currentPage == 'anonyboard' ? 'fw-bold active' : ''}" class="nav-link" aria-current="page" href="/anonyboard/list">비밀게시판</a>
                                     </li>
                                 </ul>
                                 <form class="d-flex" role="search">
@@ -73,10 +73,10 @@
                                         </ul>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link active" aria-current="page" href="/board/list">자유게시판</a>
+                                        <a th:classappend="${currentPage == 'board' ? 'fw-bold active' : ''}" class="nav-link" aria-current="page" href="/board/list">자유게시판</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link active" aria-current="page" href="/anonboard/list">비밀게시판</a>
+                                        <a th:classappend="${currentPage == 'anonyboard' ? 'fw-bold active' : ''}" class="nav-link" aria-current="page" href="/anonyboard/list">비밀게시판</a>
                                     </li>
                                 </ul>
                                 <form class="d-flex" role="search">
