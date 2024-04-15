@@ -57,12 +57,12 @@ public class AnonyBoardController {
     }
 
     // U(Update)
-    @GetMapping("/board/edit/{id}")
+    @GetMapping("/anonyboard/edit/{id}")
     public String editP(@PathVariable("id") Integer id, Model model){
         AnonyBoardResponse anonyBoardResponse = anonyBoardService.editP(id);
         if(anonyBoardResponse != null){
             model.addAttribute("board", anonyBoardResponse);
-            return "board/edit";
+            return "anonyboard/edit";
         }else{
             return "redirect:/login";
         }
