@@ -10,7 +10,50 @@
 
 <body>
 <th:block th:replace="layouts/header.html :: headerFragment"></th:block>
-    asd
+
+<div class = "container">
+    <br>
+    <table class="table text-center table-bordered">
+        <thead class="table-light">
+        <tr>
+            <th class="col-sm-1">#</th>
+            <th class="col-sm-2">날짜</th>
+            <th class="col-sm-3">작성자</th>
+            <th class="col-sm-6">제목</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="paging : ${paging}">
+            <td th:text="${paging.id}"></td>
+            <td th:text="${#temporals.format(paging.createdDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
+            <td>익명</td>
+            <td><a th:href="'/anonyboard/'+${paging.id}" th:text="${paging.title}"></a></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center">
+            <li class="page-item" th:classappend="${paging.first} ? 'disabled' : ''">
+                <a class="page-link" th:href="@{/anonyboard/list(page=${paging.getNumber() - 1})}">Previous</a>
+            </li>
+            <li class="page-item" th:each="pageNum : ${#numbers.sequence(
+            (paging.getNumber() - 5 <= 0 ? 0 : paging.getNumber() - 5),
+            (paging.getNumber() + 4 <= paging.getTotalPages() - 1 ?  paging.getNumber() + 4 : paging.getTotalPages() - 1)
+        )}" th:classappend="${pageNum == paging.getNumber()} ? 'active' : ''">
+                <a class="page-link" th:text="${pageNum + 1}" th:href="@{/anonyboard/list(page=${pageNum})}"></a>
+            </li>
+            <li class="page-item" th:classappend="${paging.last} ? 'disabled' : ''">
+                <a class="page-link" th:href="@{/anonyboard/list(page=${paging.getNumber() + 1})}">Next</a>
+            </li>
+        </ul>
+    </nav>
+
+
+
+    <div sec:authorize="isAuthenticated()">
+        <a href="/anonyboard/create" class="btn btn-primary">글쓰기</a>
+    </div>
 </div>
 <!-- footer -->
 <th:block th:replace="layouts/footer.html :: footerFragment"></th:block>

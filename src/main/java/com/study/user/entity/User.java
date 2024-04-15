@@ -1,5 +1,6 @@
 package com.study.user.entity;
 
+import com.study.anonyboard.entity.AnonyBoard;
 import com.study.board.entity.Board;
 import jakarta.persistence.*;
 import lombok.Builder;
@@ -13,14 +14,14 @@ import java.util.List;
 @Entity
 @Getter
 @NoArgsConstructor
-@ToString(exclude = "boards") // 순환 참조를 피하기 위해 boards는 toString에서 제외
+@ToString(exclude = {"boards", "anonyBoards"}) // 순환 참조를 피하기 위해 toString에서 제외
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
     private Integer id;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false, name = "user_id", unique = true)
     private String userId;
 
     @Column(nullable = false, name = "nickName", unique = true)
@@ -36,7 +37,10 @@ public class User {
 
     private LocalDateTime createdDate;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY) // Board 엔티티의 member 필드에 의해 매핑됨
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY) // AnonyBoard와의 연관관계
+    private List<AnonyBoard> anonyBoards = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY) // Board와의 연관관계
     private List<Board> boards = new ArrayList<>();
 
     @Builder

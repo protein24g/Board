@@ -8,12 +8,12 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class BoardCreateRequest {
+public class AnonyBoardRequest {
     private String title;
     private String content;
 
     @Builder
-    public BoardCreateRequest(String title, String content){
+    public AnonyBoardRequest(String title, String content){
         this.title = title;
         this.content = content;
     }
