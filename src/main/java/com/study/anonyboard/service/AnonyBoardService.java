@@ -74,4 +74,22 @@ public class AnonyBoardService {
                 .createdDate(anonyBoard.getCreatedDate())
                 .build();
     }
+
+    public AnonyBoardResponse editP(Integer id) {
+        AnonyBoard anonyBoard = anonyBoardRepository.findById(id).orElse(null);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
+        if(!anonyBoard.getUser().getUserId().equals(customUserDetails.getUsername())) {
+            System.out.println("게시글 작성자만 수정 가능합니다");
+            return null;
+        }else{
+            AnonyBoardResponse response = AnonyBoardResponse.builder()
+                    .id(anonyBoard.getId())
+                    .title(anonyBoard.getTitle())
+                    .content(anonyBoard.getContent())
+                    .createdDate(anonyBoard.getCreatedDate())
+                    .build();
+            return response;
+        }
+    }
 }

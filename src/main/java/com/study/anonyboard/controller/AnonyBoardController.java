@@ -3,7 +3,6 @@ package com.study.anonyboard.controller;
 import com.study.anonyboard.dto.requests.AnonyBoardRequest;
 import com.study.anonyboard.dto.response.AnonyBoardResponse;
 import com.study.anonyboard.service.AnonyBoardService;
-import com.study.board.dto.response.BoardResponse;
 import com.study.user.dto.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -55,5 +54,17 @@ public class AnonyBoardController {
         model.addAttribute("currentPage", "anonyboard");
         model.addAttribute("paging", paging);
         return "anonyboard/list";
+    }
+
+    // U(Update)
+    @GetMapping("/board/edit/{id}")
+    public String editP(@PathVariable("id") Integer id, Model model){
+        AnonyBoardResponse anonyBoardResponse = anonyBoardService.editP(id);
+        if(anonyBoardResponse != null){
+            model.addAttribute("board", anonyBoardResponse);
+            return "board/edit";
+        }else{
+            return "redirect:/login";
+        }
     }
 }
