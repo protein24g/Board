@@ -8,7 +8,7 @@
                     <nav class="navbar navbar-expand-lg bg-body-tertiary">
                         <div class="container-fluid">
                             <a class="navbar-brand" href="/board/list">
-                                <img src="https://cdn-icons-png.flaticon.com/128/4631/4631694.png" width="70">
+                                <img src="https://cdn-icons-png.flaticon.com/128/2673/2673902.png" width="70">
                             </a>
                             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                                 <span class="navbar-toggler-icon"></span>
@@ -17,7 +17,7 @@
 
                                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                                     <li class="nav-item">
-                                        <a th:text="${#authentication.principal.username}" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"></a>
+                                        <a th:text="${#authentication.principal.nickName} + ' 님'" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"></a>
                                         <ul class="dropdown-menu">
                                             <li>
                                                 <a class="dropdown-item" href="/mypage">마이페이지</a>
@@ -35,7 +35,7 @@
                                         <a th:classappend="${currentPage == 'board' ? 'fw-bold active' : ''}" class="nav-link" aria-current="page" href="/board/list">자유게시판</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a th:classappend="${currentPage == 'anonyboard' ? 'fw-bold active' : ''}" class="nav-link" aria-current="page" href="/anonyboard/list">비밀게시판</a>
+                                        <a th:classappend="${currentPage == 'anonyboard' ? 'fw-bold active' : ''}" class="nav-link" aria-current="page" href="/anonyboard/list">익명게시판</a>
                                     </li>
                                 </ul>
                                 <form class="d-flex" role="search">
@@ -56,7 +56,7 @@
                     <nav class="navbar navbar-expand-lg bg-body-tertiary">
                         <div class="container-fluid">
                             <a class="navbar-brand" href="/board/list">
-                                <img src="https://cdn-icons-png.flaticon.com/128/4631/4631694.png" width="70">
+                                <img src="https://cdn-icons-png.flaticon.com/128/2673/2673902.png" width="70">
                             </a>
                             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                                 <span class="navbar-toggler-icon"></span>
@@ -76,7 +76,7 @@
                                         <a th:classappend="${currentPage == 'board' ? 'fw-bold active' : ''}" class="nav-link" aria-current="page" href="/board/list">자유게시판</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a th:classappend="${currentPage == 'anonyboard' ? 'fw-bold active' : ''}" class="nav-link" aria-current="page" href="/anonyboard/list">비밀게시판</a>
+                                        <a th:classappend="${currentPage == 'anonyboard' ? 'fw-bold active' : ''}" class="nav-link" aria-current="page" href="/anonyboard/list">익명게시판</a>
                                     </li>
                                 </ul>
                                 <form class="d-flex" role="search">

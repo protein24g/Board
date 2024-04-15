@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" data-bs-theme="dark" xmlns:th="http://www.thymeleaf.org">
     <head>
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -51,12 +51,7 @@
                 </tr>
             </table>
 
-            댓글
-            <div>
-                asdasdadsad
-            </div>
-
-            <div th:if="${board.nickName == nickName}">
+            <div th:if="${board.nickName == nickName}" class="d-flex align-items-center gap-2">
                 <a th:href="'/board/edit/' + ${board.id}" class="btn btn-primary">수정</a>
                 <form id="deleteForm" th:action="'/board/' + ${board.id}" method="post">
                     <input type="hidden" name="_csrf" th:value="${_csrf.token}">
@@ -65,7 +60,15 @@
                 </form>
             </div>
 
-
+            <div>
+                <hr>
+                <div class="form-floating">
+                    <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px"></textarea>
+                    <label for="floatingTextarea2">Comments</label>
+                </div>
+                <br>
+                <button type="button" class="btn btn-primary">작성</button>
+            </div>
         </div>
         <!-- footer -->
         <th:block th:replace="layouts/footer.html :: footerFragment"></th:block>
